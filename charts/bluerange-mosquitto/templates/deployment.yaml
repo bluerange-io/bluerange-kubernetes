@@ -100,11 +100,6 @@ spec:
         - name: config
           configMap:
             name: {{ include "bluerangeMosquitto.fullname" . }}-config
-      {{- if .Values.bluerangeMosquitto.mqtts.enabled }}
-        - name: tls
-          secret:
-            secretName: wildcard-bluerange-io
-      {{- end }}
       {{- end }}
       {{- if .Values.additionalVolumes }}
         {{- toYaml .Values.additionalVolumes | nindent 8 }}
