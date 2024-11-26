@@ -1,0 +1,76 @@
+name: Lint and Test Charts
+
+on: pull_request
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.2
+
+      - name: Add repositories
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+          check-latest: true
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.6.1
+
+      - name: Set up helm-unittest
+        run: |
+          helm plugin install https://github.com/helm-unittest/helm-unittest
+
+      - name: Install subchart dependencies
+        run: |
+          helm dependency build ./charts/bluerange-server
+          helm dependency build ./charts/bluerange-mosquitto
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run chart-testing (lint)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
+
+      - name: Run helm-unittest
+        run: |
+          helm unittest ./charts/bluerange-server
+          helm unittest ./charts/bluerange-mosquitto
+
+      - name: Create kind cluster
+        if: steps.list-changed.outputs.changed == 'true'
+        uses: helm/kind-action@v1.9.0
+
+      - name: Install Traefik CRDs
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          kubectl apply --server-side --force-conflicts -k https://github.com/traefik/traefik-helm-chart/traefik/crds/
+
+      - name: Install cert-manager CRDs
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.0/cert-manager.crds.yaml
+
+      - name: Run chart-testing (install)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          ct install \
+            --target-branch ${{ github.event.repository.default_branch }} \
+            --helm-extra-args '--timeout 600s'
