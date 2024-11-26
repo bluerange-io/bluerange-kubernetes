@@ -1,0 +1,11 @@
+{{- if .Values.bluerangeServer.config }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "bluerangeServer.fullname" . }}-config
+  labels:
+    {{- include "bluerangeServer.labels" . | nindent 4 }}
+data:
+  application.yml: |
+    {{- toYaml .Values.bluerangeServer.config | nindent 4 }}
+{{- end }}

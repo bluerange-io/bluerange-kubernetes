@@ -1,0 +1,9 @@
+apiVersion: v2
+name: bluerange-mosquitto
+description: Install BlueRange Mosquitto in your Kubernetes cluster
+
+type: application
+
+version: 1.0.0
+
+appVersion: "22"

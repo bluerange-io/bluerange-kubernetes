@@ -1,0 +1,11 @@
+{{- if .Values.bluerangeServer.preRunScript -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "bluerangeServer.fullname" . }}-prerun
+  labels:
+    {{- include "bluerangeServer.labels" . | nindent 4 }}
+data:
+  prerun.sh: |
+    {{- tpl .Values.bluerangeServer.preRunScript $ | nindent 4 }}
+{{- end -}}
