@@ -1,6 +1,9 @@
 apiVersion: v2
 name: bluerange-server
 description: Install BlueRange Server in your Kubernetes cluster
+maintainers:
+  - name: mway-niels
+    email: niels.heidbrink@mway.io
 
 type: application
 
