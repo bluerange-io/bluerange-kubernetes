@@ -1,0 +1,27 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: '{{ required "bluerangeServer.config.relution.server.externalURL is required!" .Values.bluerangeServer.config.relution.server.externalURL | replace "https://" "" }}'
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+bluerangeServer:
+  config:
+    relution:
+      server:
+        externalURL: https://test.bluerange.io
+      database:
+        type: mariadb
+        url: jdbc:mariadb://mariadb:3306/bluerange
+        username: bluerange
+        password: bluerange
+
+mariadb:
+  enabled: true
+  fullnameOverride: mariadb
+  auth:
+    rootPassword: bluerange
+    username: bluerange
+    password: bluerange
+    database: bluerange
