@@ -9,14 +9,14 @@ type: application
 
 version: 1.0.0
 
-appVersion: "5.17.0"
+appVersion: "5.27.4"
 
 dependencies:
   - name: mariadb
     repository: https://charts.bitnami.com/bitnami
-    version: 11.4.2
+    version: 20.1.0
     condition: mariadb.enabled
   - name: mongodb
     repository: https://charts.bitnami.com/bitnami
-    version: 13.9.4
+    version: 16.3.1
     condition: mongodb.enabled
