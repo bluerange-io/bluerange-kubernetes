@@ -1,0 +1,9 @@
+dependencies:
+- name: mariadb
+  repository: https://charts.bitnami.com/bitnami
+  version: 20.1.0
+- name: mongodb
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.3.1
+digest: sha256:17e6ef3b5968a9c127fe46051321378f3c7aceb8545c6648e6ca1baf411aac17
+generated: "2024-11-28T15:17:25.836378+07:00"

@@ -1,0 +1,22 @@
+apiVersion: v2
+name: bluerange-server
+description: Install BlueRange Server in your Kubernetes cluster
+maintainers:
+  - name: mway-niels
+    email: niels.heidbrink@mway.io
+
+type: application
+
+version: 1.0.0
+
+appVersion: "5.27.4"
+
+dependencies:
+  - name: mariadb
+    repository: https://charts.bitnami.com/bitnami
+    version: 20.1.0
+    condition: mariadb.enabled
+  - name: mongodb
+    repository: https://charts.bitnami.com/bitnami
+    version: 16.3.1
+    condition: mongodb.enabled

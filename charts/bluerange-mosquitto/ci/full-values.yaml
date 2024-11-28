@@ -1,0 +1,21 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: test-mosquitto.bluerange.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+ingressRoute:
+  mqtts:
+    enabled: true
+    matchRule: "HostSNI(`test-mosquitto.bluerange.io`)"
+    entryPoints:
+      - mqtts
+
+autoscaling:
+  enabled: true
+
+bluerangeMosquitto:
+  mqtts:
+    enabled: true
