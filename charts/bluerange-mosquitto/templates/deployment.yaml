@@ -51,16 +51,6 @@ spec:
             - name: config
               mountPath: /etc/mosquitto/mosquitto.conf
               subPath: mosquitto.conf
-          {{- if .Values.bluerangeMosquitto.mqtts.enabled }}
-            - name: tls
-              subPath: tls.key
-              mountPath: "/etc/mosquitto/tls.key"
-              readOnly: true
-            - name: tls
-              subPath: tls.crt
-              mountPath: "/etc/mosquitto/tls.crt"
-              readOnly: true
-          {{- end }}
           {{- end }}
           {{- if .Values.additionalVolumeMounts }}
             {{- toYaml .Values.additionalVolumeMounts | nindent 12 }}

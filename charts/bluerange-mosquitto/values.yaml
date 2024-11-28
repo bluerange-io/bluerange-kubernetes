@@ -47,6 +47,7 @@ ingress:
 ingressRoute:
   mqtts:
     enabled: false
+    matchRule: ""
     entryPoints:
       - mqtts
 

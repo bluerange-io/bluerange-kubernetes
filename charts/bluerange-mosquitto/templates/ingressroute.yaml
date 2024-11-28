@@ -18,7 +18,7 @@ spec:
     - {{ . }}
   {{- end }}
   routes:
-    - match: {{ .Values.ingressRoute.mqtts.matchRule }}
+    - match: {{ required "ingressRoute.mqtts.matchRule is required!" .Values.ingressRoute.mqtts.matchRule }}
       services:
         - name: {{ template "bluerangeMosquitto.fullname" . }}
           port: mqtt

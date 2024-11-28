@@ -9,6 +9,7 @@ ingress:
 ingressRoute:
   mqtts:
     enabled: true
+    matchRule: "HostSNI(`test-mosquitto.bluerange.io`)"
     entryPoints:
       - mqtts
 
