@@ -30,11 +30,6 @@ bluerangeServer:
 mariadb:
   enabled: true
   fullnameOverride: mariadb
-  auth:
-    rootPassword: bluerange
-    username: bluerange
-    password: bluerange
-    database: bluerange
 
 mongodb:
   enabled: true
