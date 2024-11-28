@@ -112,7 +112,7 @@ heapDumpExporter:
 
 # MariaDB is provided as a dependency to enable quick debugging. We recommend deploying BlueRange on a dedicated database cluster.
 mariadb:
-  enabled: true
+  enabled: false
   auth:
     # Please change these passwords before deploying BlueRange.
     rootPassword: root
