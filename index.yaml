@@ -3,6 +3,19 @@ entries:
   bluerange-mosquitto:
   - apiVersion: v2
     appVersion: "23"
+    created: "2024-11-28T10:35:45.15444701Z"
+    description: Install BlueRange Mosquitto in your Kubernetes cluster
+    digest: 3bda547595eada3d0244d5dc9f1e86df39d129eb905c266b46d246782392132c
+    maintainers:
+    - email: niels.heidbrink@mway.io
+      name: mway-niels
+    name: bluerange-mosquitto
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-mosquitto-1.0.1-1/bluerange-mosquitto-1.0.1-1.tgz
+    version: 1.0.1-1
+  - apiVersion: v2
+    appVersion: "23"
     created: "2024-11-28T09:02:05.997120662Z"
     description: Install BlueRange Mosquitto in your Kubernetes cluster
     digest: 932bc6ea4c893c37e54e1e2f1e0ddddccd988e60fa521fdf2bfd434b352f0b52
@@ -15,6 +28,28 @@ entries:
     - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-mosquitto-1.0.0/bluerange-mosquitto-1.0.0.tgz
     version: 1.0.0
   bluerange-server:
+  - apiVersion: v2
+    appVersion: 5.27.4
+    created: "2024-11-28T10:35:45.416684607Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.1.0
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.3.1
+    description: Install BlueRange Server in your Kubernetes cluster
+    digest: aad2d024a6a18926dc854d0ff09323d0b468e486047a13893fba0f8ca82e7934
+    maintainers:
+    - email: niels.heidbrink@mway.io
+      name: mway-niels
+    name: bluerange-server
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.0.1-1/bluerange-server-1.0.1-1.tgz
+    version: 1.0.1-1
   - apiVersion: v2
     appVersion: 5.27.4
     created: "2024-11-28T09:02:06.143025668Z"
@@ -37,4 +72,4 @@ entries:
     urls:
     - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.0.0/bluerange-server-1.0.0.tgz
     version: 1.0.0
-generated: "2024-11-28T09:02:06.143040285Z"
+generated: "2024-11-28T10:35:45.416707931Z"
