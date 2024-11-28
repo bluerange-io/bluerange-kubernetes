@@ -123,22 +123,6 @@ bluerangeMosquitto:
 
   mqtts:
     enabled: false
-    config: |
-      # MQTTS
-      listener 8883
-      protocol mqtt
-      allow_anonymous false
-      allow_zero_length_clientid false
-      keyfile /etc/mosquitto/tls.key
-      certfile /etc/mosquitto/tls.crt
-      cafile /etc/mosquitto/tls.crt
-      auth_plugin /usr/lib/mosquitto/auth-plug.so
-      auth_opt_log_priority INFO
-      auth_opt_max_login_attempts_per_minute 2147483647
-      auth_opt_http_with_tls false
-      auth_opt_http_port 80
-      auth_opt_http_hostname BLUERANGE_HOSTNAME
-      auth_opt_http_getuser_uri /api/v1/iot/mqtt/mosquitto-auth/getuser
 
   environment:
     BLUERANGE_HOSTNAME: bluerange-server
