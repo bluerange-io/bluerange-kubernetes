@@ -1,0 +1,40 @@
+apiVersion: v1
+entries:
+  bluerange-mosquitto:
+  - apiVersion: v2
+    appVersion: "23"
+    created: "2024-11-28T09:02:05.997120662Z"
+    description: Install BlueRange Mosquitto in your Kubernetes cluster
+    digest: 932bc6ea4c893c37e54e1e2f1e0ddddccd988e60fa521fdf2bfd434b352f0b52
+    maintainers:
+    - email: niels.heidbrink@mway.io
+      name: mway-niels
+    name: bluerange-mosquitto
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-mosquitto-1.0.0/bluerange-mosquitto-1.0.0.tgz
+    version: 1.0.0
+  bluerange-server:
+  - apiVersion: v2
+    appVersion: 5.27.4
+    created: "2024-11-28T09:02:06.143025668Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.1.0
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.3.1
+    description: Install BlueRange Server in your Kubernetes cluster
+    digest: 32cebe748c7882f5d64753a85ed71c1eca75c7c4e63aeb502053c36279aaf661
+    maintainers:
+    - email: niels.heidbrink@mway.io
+      name: mway-niels
+    name: bluerange-server
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.0.0/bluerange-server-1.0.0.tgz
+    version: 1.0.0
+generated: "2024-11-28T09:02:06.143040285Z"
