@@ -78,7 +78,8 @@ bluerangeServer:
     mqtt:
       enabled: true
       server_uris: tcp://bluerange-mosquitto:1883
-  environment: {}
+  environment:
+    RELUTION_OPTS: -XX:MinRAMPercentage=50.0 -XX:MaxRAMPercentage=40.0
   secrets: {}
   existingSecretRefs: []
   restore:

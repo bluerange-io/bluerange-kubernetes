@@ -19,6 +19,13 @@ bluerangeServer:
         url: jdbc:mariadb://mariadb:3306/bluerange
         username: bluerange
         password: bluerange
+      mongodb:
+        enabled: true
+        host: mongodb
+        port: 27017
+        database: bluerange
+        username: bluerange
+        password: bluerange
 
 mariadb:
   enabled: true
@@ -28,6 +35,10 @@ mariadb:
     username: bluerange
     password: bluerange
     database: bluerange
+
+mongodb:
+  enabled: true
+  fullnameOverride: mongodb
 
 heapDumpExporter:
   enabled: true
