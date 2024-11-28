@@ -17,7 +17,7 @@ helm repo update
 ### Deploying BlueRange Mosquitto
 
 ```bash
-helm install bluerange bluerange/bluerange-mosquitto -f my-values.yaml
+helm install bluerange-mosquitto bluerange/bluerange-mosquitto -f my-values.yaml
 ```
 
 ## Contributing

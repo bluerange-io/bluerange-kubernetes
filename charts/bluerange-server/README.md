@@ -45,10 +45,10 @@ ingress:
           pathType: ImplementationSpecific
 ```
 
-### Deploying BlueRange Mosquitto
+### Deploying BlueRange
 
 ```bash
-helm install bluerange bluerange/bluerange-server -f my-values.yaml
+helm install bluerange-server bluerange/bluerange-server -f my-values.yaml
 ```
 
 ## Contributing
