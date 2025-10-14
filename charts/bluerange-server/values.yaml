@@ -85,13 +85,6 @@ bluerangeServer:
   restore:
     postgresql:
       enabled: false
-    resources:
-      requests:
-        cpu: 50m
-        memory: 100Mi
-      limits:
-        cpu: 200m
-        memory: 512Mi
 
 additionalVolumes: []
 additionalVolumeMounts: []
