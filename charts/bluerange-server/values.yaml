@@ -95,7 +95,7 @@ heapDumpExporter:
   image:
     repository: amazon/aws-cli
     pullPolicy: IfNotPresent
-    tag: "2.9.13"
+    tag: "2.31.14"
   directory: /opt/relution/log
   s3:
     endpointUrl: https://s3.eu-central-1.amazonaws.com
@@ -113,6 +113,10 @@ mariadb:
     password: bluerange
     database: bluerange
 
+  # Switch to bitnami legacy repository
+  image:
+    repository: bitnamilegacy/mariadb
+
 mongodb:
   enabled: false
   auth:
@@ -124,3 +128,7 @@ mongodb:
       - bluerange
     databases:
       - bluerange
+
+  # Switch to bitnami legacy repository
+  image:
+    repository: bitnamilegacy/mongodb

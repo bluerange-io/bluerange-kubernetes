@@ -2,14 +2,16 @@ apiVersion: v2
 name: bluerange-server
 description: Install BlueRange Server in your Kubernetes cluster
 maintainers:
-  - name: mway-niels
-    email: niels.heidbrink@mway.io
+  - name: niels-hb
+    email: niels.heidbrink@external.mway.io
+  - name: taschenuhr
+    email: 29057942+taschenuhr@users.noreply.github.com
 
 type: application
 
-version: 1.0.4-1
+version: 1.1.0-1
 
-appVersion: "5.27.4"
+appVersion: "5.32.0"
 
 dependencies:
   - name: mariadb
