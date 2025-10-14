@@ -11,6 +11,8 @@ autoscaling:
 
 bluerangeServer:
   config:
+    mqtt:
+      enabled: false
     relution:
       server:
         externalURL: https://test.bluerange.io
