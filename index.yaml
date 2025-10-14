@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   bluerange-mosquitto:
   - apiVersion: v2
+    appVersion: "24"
+    created: "2025-10-14T12:59:51.404269453Z"
+    description: Install BlueRange Mosquitto in your Kubernetes cluster
+    digest: aa31204ec6f8e05b1804dd7bb5ede7d632cc7f9875a3cc9073204b0f08a11a24
+    maintainers:
+    - email: niels.heidbrink@external.mway.io
+      name: niels-hb
+    - email: 29057942+taschenuhr@users.noreply.github.com
+      name: taschenuhr
+    name: bluerange-mosquitto
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-mosquitto-1.0.3-1/bluerange-mosquitto-1.0.3-1.tgz
+    version: 1.0.3-1
+  - apiVersion: v2
     appVersion: "23"
     created: "2024-11-28T13:20:21.999299607Z"
     description: Install BlueRange Mosquitto in your Kubernetes cluster
@@ -41,6 +56,30 @@ entries:
     - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-mosquitto-1.0.0/bluerange-mosquitto-1.0.0.tgz
     version: 1.0.0
   bluerange-server:
+  - apiVersion: v2
+    appVersion: 5.32.0
+    created: "2025-10-14T12:59:51.651670106Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.1.0
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.3.1
+    description: Install BlueRange Server in your Kubernetes cluster
+    digest: e226a3c049aef30ca66f680b2117ecd02fa4dbb91aba7c18962dbc1c4a264ae0
+    maintainers:
+    - email: niels.heidbrink@external.mway.io
+      name: niels-hb
+    - email: 29057942+taschenuhr@users.noreply.github.com
+      name: taschenuhr
+    name: bluerange-server
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.1.0-1/bluerange-server-1.1.0-1.tgz
+    version: 1.1.0-1
   - apiVersion: v2
     appVersion: 5.27.4
     created: "2025-10-14T06:50:55.641405959Z"
@@ -151,4 +190,4 @@ entries:
     urls:
     - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.0.0/bluerange-server-1.0.0.tgz
     version: 1.0.0
-generated: "2025-10-14T06:50:55.641431126Z"
+generated: "2025-10-14T12:59:51.651701124Z"
