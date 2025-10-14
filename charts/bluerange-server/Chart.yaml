@@ -7,9 +7,9 @@ maintainers:
 
 type: application
 
-version: 1.0.4-1
+version: 1.1.0-1
 
-appVersion: "5.27.4"
+appVersion: "5.32.0"
 
 dependencies:
   - name: mariadb
