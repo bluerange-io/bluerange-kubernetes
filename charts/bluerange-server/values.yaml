@@ -112,7 +112,7 @@ mariadb:
     username: bluerange
     password: bluerange
     database: bluerange
-  
+
   # Switch to bitnami legacy repository
   image:
     repository: bitnamilegacy/mongodb
@@ -128,7 +128,7 @@ mongodb:
       - bluerange
     databases:
       - bluerange
-  
+
   # Switch to bitnami legacy repository
   image:
     repository: bitnamilegacy/mongodb
