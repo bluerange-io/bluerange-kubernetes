@@ -115,7 +115,7 @@ mariadb:
 
   # Switch to bitnami legacy repository
   image:
-    repository: bitnamilegacy/mongodb
+    repository: bitnamilegacy/mariadb
 
 mongodb:
   enabled: false
