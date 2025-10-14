@@ -2,8 +2,10 @@ apiVersion: v2
 name: bluerange-mosquitto
 description: Install BlueRange Mosquitto in your Kubernetes cluster
 maintainers:
-  - name: mway-niels
-    email: niels.heidbrink@mway.io
+  - name: niels-hb
+    email: niels.heidbrink@external.mway.io
+  - name: taschenuhr
+    email: 29057942+taschenuhr@users.noreply.github.com
 
 type: application
 
