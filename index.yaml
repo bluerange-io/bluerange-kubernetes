@@ -43,6 +43,28 @@ entries:
   bluerange-server:
   - apiVersion: v2
     appVersion: 5.27.4
+    created: "2025-10-14T06:50:55.641405959Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.1.0
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.3.1
+    description: Install BlueRange Server in your Kubernetes cluster
+    digest: 1d8dd961e792d2d2c8b1289d2af5d71b243f9cc14dd8b926326608793b8b64dc
+    maintainers:
+    - email: niels.heidbrink@mway.io
+      name: mway-niels
+    name: bluerange-server
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.0.4-1/bluerange-server-1.0.4-1.tgz
+    version: 1.0.4-1
+  - apiVersion: v2
+    appVersion: 5.27.4
     created: "2024-11-28T13:20:22.141920692Z"
     dependencies:
     - condition: mariadb.enabled
@@ -129,4 +151,4 @@ entries:
     urls:
     - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.0.0/bluerange-server-1.0.0.tgz
     version: 1.0.0
-generated: "2024-11-28T13:20:22.141955658Z"
+generated: "2025-10-14T06:50:55.641431126Z"
