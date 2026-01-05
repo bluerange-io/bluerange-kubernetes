@@ -1,9 +1,9 @@
 dependencies:
 - name: mariadb
-  repository: https://charts.bitnami.com/bitnami
-  version: 20.1.0
+  repository: oci://registry-1.docker.io/cloudpirates
+  version: 0.10.1
 - name: mongodb
-  repository: https://charts.bitnami.com/bitnami
-  version: 16.3.1
-digest: sha256:17e6ef3b5968a9c127fe46051321378f3c7aceb8545c6648e6ca1baf411aac17
-generated: "2024-11-28T15:17:25.836378+07:00"
+  repository: oci://registry-1.docker.io/cloudpirates
+  version: 0.7.1
+digest: sha256:fbdb4340f2d1c533146c7e8a11d4e0045fe965e46e76993e2631afef0fb6e756
+generated: "2026-01-05T16:44:44.43724+01:00"

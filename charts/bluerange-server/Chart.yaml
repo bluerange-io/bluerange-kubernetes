@@ -11,14 +11,14 @@ type: application
 
 version: 1.1.0-1
 
-appVersion: "5.32.0"
+appVersion: "5.33.1"
 
 dependencies:
   - name: mariadb
-    repository: https://charts.bitnami.com/bitnami
-    version: 20.1.0
+    repository: oci://registry-1.docker.io/cloudpirates
+    version: 0.10.1
     condition: mariadb.enabled
   - name: mongodb
-    repository: https://charts.bitnami.com/bitnami
-    version: 16.3.1
+    repository: oci://registry-1.docker.io/cloudpirates
+    version: 0.7.1
     condition: mongodb.enabled
