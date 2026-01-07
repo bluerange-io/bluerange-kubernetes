@@ -107,28 +107,21 @@ heapDumpExporter:
 mariadb:
   enabled: false
   auth:
-    # Please change these passwords before deploying BlueRange.
-    rootPassword: root
-    username: bluerange
-    password: bluerange
+    ## Choose a secure password before deploying BlueRange.
+    # rootPassword:
     database: bluerange
-
-  # Switch to bitnami legacy repository
-  image:
-    repository: bitnamilegacy/mariadb
+    username: bluerange
+    ## Choose a secure password before deploying BlueRange.
+    # password:
 
 mongodb:
   enabled: false
   auth:
     rootUser: admin
-    rootPassword: root
-    usernames:
-      - bluerange
-    passwords:
-      - bluerange
-    databases:
-      - bluerange
-
-  # Switch to bitnami legacy repository
-  image:
-    repository: bitnamilegacy/mongodb
+    ## Choose a secure password before deploying BlueRange.
+    # rootPassword:
+  customUser:
+    database: bluerange
+    name: bluerange
+    ## Choose a secure password before deploying BlueRange.
+    # password:
