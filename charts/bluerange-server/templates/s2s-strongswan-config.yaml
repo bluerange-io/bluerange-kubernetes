@@ -1,0 +1,15 @@
+{{- if .Values.s2s.enabled }}
+kind: Secret
+apiVersion: v1
+metadata:
+  name: {{ include "bluerangeServer.fullname" . }}-s2s-strongswan-secrets
+  labels:
+    {{- include "bluerangeServer.labels" . | nindent 4 }}
+stringData:
+  s2s-secrets.conf: |
+    secrets {
+      ike-psk {
+        secret = {{ required "s2s.psk is required." .Values.s2s.psk | quote }}
+      }
+    }
+{{- end }}
