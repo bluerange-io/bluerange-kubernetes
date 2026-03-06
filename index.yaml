@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   bluerange-mosquitto:
   - apiVersion: v2
+    appVersion: "25"
+    created: "2026-03-06T14:11:48.258342778Z"
+    description: Install BlueRange Mosquitto in your Kubernetes cluster
+    digest: 49d04a2583ae932f94655e8abec102ff7554b27529c35e4689bbf7d4d4a9db10
+    maintainers:
+    - email: niels.heidbrink@external.mway.io
+      name: niels-hb
+    - email: 29057942+taschenuhr@users.noreply.github.com
+      name: taschenuhr
+    name: bluerange-mosquitto
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-mosquitto-1.0.4/bluerange-mosquitto-1.0.4.tgz
+    version: 1.0.4
+  - apiVersion: v2
     appVersion: "24"
     created: "2025-10-14T12:59:51.404269453Z"
     description: Install BlueRange Mosquitto in your Kubernetes cluster
@@ -214,4 +229,4 @@ entries:
     urls:
     - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.0.0/bluerange-server-1.0.0.tgz
     version: 1.0.0
-generated: "2026-01-07T08:18:17.490110613Z"
+generated: "2026-03-06T14:11:48.258394675Z"
