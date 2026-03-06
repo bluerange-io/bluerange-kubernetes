@@ -9,6 +9,6 @@ maintainers:
 
 type: application
 
-version: 1.0.3-1
+version: 1.0.4
 
-appVersion: "24"
+appVersion: "25"
