@@ -26,6 +26,10 @@ spec:
         {{- if .Values.bluerangeServer.secrets }}
         checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
         {{- end }}
+        {{- if .Values.s2s.enabled }}
+        checksum/s2s-strongswan-config: {{ include (print $.Template.BasePath "/s2s-strongswan-config.yaml") . | sha256sum }}
+        checksum/s2s-setup: {{ include (print $.Template.BasePath "/s2s-setup.yaml") . | sha256sum }}
+        {{- end }}
         prometheus.io/scrape: "true"
         prometheus.io/port: "8099"
         prometheus.io/path: "/actuator/prometheus"
@@ -44,6 +48,51 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- if .Values.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- end }}
+      {{- if .Values.s2s.enabled }}
+      initContainers:
+        - name: "s2s"
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN"]
+          image: "{{ .Values.s2s.image.repository }}:{{ .Values.s2s.image.tag }}"
+          imagePullPolicy: {{ .Values.s2s.image.pullPolicy }}
+          restartPolicy: Always
+          command: [ "/bin/bash", "-c", "/opt/s2s/entrypoint.sh" ]
+          {{- if .Values.s2s.livenessProbe.enabled }}
+          livenessProbe:
+            initialDelaySeconds: {{ .Values.s2s.livenessProbe.initialDelaySeconds | default 30 }}
+            periodSeconds: {{ .Values.s2s.livenessProbe.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.s2s.livenessProbe.timeoutSeconds | default 5 }}
+            failureThreshold: {{ .Values.s2s.livenessProbe.failureThreshold | default 5 }}
+            exec:
+              command: [ "/bin/bash", "-c", "/opt/s2s/health.sh" ]
+          {{- end }}
+          volumeMounts:
+            - name: s2s-strongswan-secrets
+              mountPath: "/etc/swanctl/conf.d/s2s-secrets.conf"
+              subPath: s2s-secrets.conf
+              readOnly: true
+            - name: s2s-setup
+              mountPath: "/etc/swanctl/conf.d/s2s.conf"
+              subPath: s2s.conf
+              readOnly: true
+            - name: s2s-setup
+              mountPath: "/opt/s2s/entrypoint.sh"
+              subPath: entrypoint.sh
+              readOnly: true
+            - name: s2s-setup
+              mountPath: "/etc/strongswan.d/charon-custom.conf"
+              subPath: charon-custom.conf
+              readOnly: true
+            - name: s2s-setup
+              mountPath: "/opt/s2s/autoload.sh"
+              subPath: autoload.sh
+              readOnly: true
+            - name: s2s-setup
+              mountPath: "/opt/s2s/health.sh"
+              subPath: health.sh
+              readOnly: true
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -142,7 +191,7 @@ spec:
             - name: heap-dumps
               mountPath: {{ .Values.heapDumpExporter.directory }}
         {{- end }}
-      {{- if or (or .Values.bluerangeServer.config .Values.heapDumpExporter.enabled) .Values.additionalVolumes }}
+      {{- if or (or (or .Values.bluerangeServer.config .Values.heapDumpExporter.enabled) .Values.additionalVolumes) .Values.s2s.enabled }}
       volumes:
       {{- if .Values.bluerangeServer.config }}
         - name: config
@@ -158,6 +207,15 @@ spec:
       {{- if .Values.heapDumpExporter.enabled }}
         - name: heap-dumps
           emptyDir: {}
+      {{- end }}
+      {{- if .Values.s2s.enabled }}
+        - name: s2s-strongswan-secrets
+          secret:
+            secretName: {{ include "bluerangeServer.fullname" . }}-s2s-strongswan-secrets
+        - name: s2s-setup
+          configMap:
+            name: {{ include "bluerangeServer.fullname" . }}-s2s-setup
+            defaultMode: 500
       {{- end }}
       {{- if .Values.additionalVolumes }}
         {{- toYaml .Values.additionalVolumes | nindent 8 }}

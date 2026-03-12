@@ -89,6 +89,8 @@ bluerangeServer:
 additionalVolumes: []
 additionalVolumeMounts: []
 
+terminationGracePeriodSeconds: ~
+
 # The heap dump exporter sidecar is intended to be used for debugging. It will monitor the /opt/relution/log directory (customizable) and copy new files to a S3 bucket so they can be further inspected by our development team.
 heapDumpExporter:
   enabled: false
@@ -102,6 +104,42 @@ heapDumpExporter:
     bucket: ""
     awsAccessKeyId: ""
     awsSecretAccessKey: ""
+
+s2s:
+  enabled: false
+  image:
+    repository: ubuntu
+    pullPolicy: IfNotPresent
+    tag: "24.04"
+  packages:
+    # renovate: suite=noble depName=strongswan
+    strongswan: "5.9.13-2ubuntu4.24.04.1"
+    # renovate: suite=noble depName=iptables
+    iptables: "1.8.10-3ubuntu2"
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+  logLevel: 1
+  psk: ""
+  ike:
+    proposals: sha512-aes256-ecp384
+    rekeyTime: "4h"
+  ipsec:
+    proposals: chacha20poly1305-ecp384
+    rekeyTime: "1h"
+    startAction: start
+    closeAction: start
+    dpdAction: restart
+  remote:
+    ip: ""
+    subnets: []
+  local:
+    id: bluerange
+    nat: ""
+    transferSubnet: ""
 
 # MariaDB is provided as a dependency to enable quick debugging. We recommend deploying BlueRange on a dedicated database cluster.
 mariadb:
