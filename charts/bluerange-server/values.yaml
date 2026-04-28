@@ -108,14 +108,9 @@ heapDumpExporter:
 s2s:
   enabled: false
   image:
-    repository: ubuntu
+    repository: relution/s2s-docker
     pullPolicy: IfNotPresent
-    tag: "24.04"
-  packages:
-    # renovate: suite=noble depName=strongswan
-    strongswan: "5.9.13-2ubuntu4.24.04.1"
-    # renovate: suite=noble depName=iptables
-    iptables: "1.8.10-3ubuntu2"
+    tag: "1.0.0"
   livenessProbe:
     enabled: false
     initialDelaySeconds: 30
