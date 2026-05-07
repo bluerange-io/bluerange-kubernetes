@@ -148,6 +148,7 @@ spec:
             - name: monitoring
               containerPort: 8099
               protocol: TCP
+          {{ if .Values.startupProbe.enabled }}
           startupProbe:
             httpGet:
               path: /actuator/health
@@ -155,6 +156,8 @@ spec:
             failureThreshold: {{ .Values.startupProbe.failureThreshold | default 30 }}
             periodSeconds: {{ .Values.startupProbe.periodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds | default 1 }}
+          {{- end }}
+          {{ if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -162,6 +165,8 @@ spec:
             failureThreshold: {{ .Values.livenessProbe.failureThreshold | default 3 }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 1 }}
+          {{- end }}
+          {{ if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
@@ -169,6 +174,7 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 1 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         {{- if .Values.heapDumpExporter.enabled }}

@@ -45,14 +45,17 @@ ingress:
   tls: []
 
 startupProbe:
+  enabled: true
   failureThreshold: 60
   periodSeconds: 10
   timeoutSeconds: 1
 livenessProbe:
+  enabled: true
   failureThreshold: 3
   periodSeconds: 10
   timeoutSeconds: 1
 readinessProbe:
+  enabled: true
   failureThreshold: 3
   periodSeconds: 10
   timeoutSeconds: 1
