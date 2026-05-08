@@ -73,6 +73,30 @@ entries:
   bluerange-server:
   - apiVersion: v2
     appVersion: 26.1.3
+    created: "2026-05-08T07:02:37.264560057Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.16.0
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.17.1
+    description: Install BlueRange Server in your Kubernetes cluster
+    digest: 45f409782fa26382ced8a11e84c80ba39e618e6b49dc04cf0cb5bbd532d2fce0
+    maintainers:
+    - email: niels.heidbrink@external.mway.io
+      name: niels-hb
+    - email: 29057942+taschenuhr@users.noreply.github.com
+      name: taschenuhr
+    name: bluerange-server
+    type: application
+    urls:
+    - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.3.0/bluerange-server-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: 26.1.3
     created: "2026-04-28T09:20:29.889747218Z"
     dependencies:
     - condition: mariadb.enabled
@@ -301,4 +325,4 @@ entries:
     urls:
     - https://github.com/bluerange-io/bluerange-kubernetes/releases/download/bluerange-server-1.0.0/bluerange-server-1.0.0.tgz
     version: 1.0.0
-generated: "2026-04-28T09:20:29.889812926Z"
+generated: "2026-05-08T07:02:37.264672198Z"
