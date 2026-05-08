@@ -93,6 +93,9 @@ spec:
               mountPath: "/opt/s2s/health.sh"
               subPath: health.sh
               readOnly: true
+            - name: s2s-health
+              mountPath: "/opt/s2s/health"
+              subPath: health.txt
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -111,6 +114,12 @@ spec:
             - name: prerun
               mountPath: /opt/relution/prerun.sh
               subPath: prerun.sh
+          {{- end }}
+          {{- if .Values.s2s.enabled }}
+            - name: s2s-health
+              mountPath: "/opt/s2s/health"
+              subPath: health.txt
+              readOnly: true
           {{- end }}
           {{- if .Values.heapDumpExporter.enabled }}
             - name: heap-dumps
@@ -221,6 +230,8 @@ spec:
           configMap:
             name: {{ include "bluerangeServer.fullname" . }}-s2s-setup
             defaultMode: 500
+        - name: s2s-health
+          emptyDir: {}
       {{- end }}
       {{- if .Values.additionalVolumes }}
         {{- toYaml .Values.additionalVolumes | nindent 8 }}
