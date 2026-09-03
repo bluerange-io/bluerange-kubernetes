@@ -13,9 +13,6 @@ ingressRoute:
     entryPoints:
       - mqtts
 
-autoscaling:
-  enabled: true
-
 bluerangeMosquitto:
   mqtts:
     enabled: true

@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "bluerangeMosquitto.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "bluerangeMosquitto.selectorLabels" . | nindent 6 }}
