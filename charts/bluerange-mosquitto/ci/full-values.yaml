@@ -16,3 +16,12 @@ ingressRoute:
 bluerangeMosquitto:
   mqtts:
     enabled: true
+
+  environment:
+    BLUERANGE_HOSTNAME: bluerange-server
+    BLUERANGE_PORT: "80"
+    BLUERANGE_WITH_TLS: "false"
+    MOSQUITTO_LISTENERS: "auto"
+    MOSQUITTO_MAX_LOGIN_ATTEMPTS: "30"
+    PROMETHEUS_PASSWORD: "random-secret"
+    BLUERANGE_DISABLE_MONITORING: "false"
