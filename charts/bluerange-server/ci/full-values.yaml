@@ -27,6 +27,22 @@ bluerangeServer:
         username: bluerange
         password: bluerange
 
+s2s:
+  enabled: true
+  livenessProbe:
+    enabled: false
+  psk: "sharedsecret"
+  separateChildSas: false
+  remote:
+    ip: 1.2.3.4
+    subnets:
+      - 192.168.178.10/32
+      - 192.168.178.20/32
+      - 192.168.178.30/32
+  local:
+    nat: 10.10.10.10
+    transferSubnet: 10.10.10.10/32
+
 mariadb:
   enabled: true
   fullnameOverride: mariadb
