@@ -95,8 +95,6 @@ additionalSidecarContainers: []
 additionalVolumes: []
 additionalVolumeMounts: []
 
-terminationGracePeriodSeconds: ~
-
 # The heap dump exporter sidecar is intended to be used for debugging by our development team.
 heapDumpExporter:
   directory: /opt/relution/log
