@@ -27,6 +27,15 @@ bluerangeServer:
         username: bluerange
         password: bluerange
 
+additionalInitContainers:
+  - name: busybox-init
+    image: busybox:latest
+
+additionalSidecarContainers:
+  - name: nginx-sidecar
+    image: nginx:latest
+    restartPolicy: Always
+
 s2s:
   enabled: true
   livenessProbe:
@@ -51,9 +60,22 @@ mongodb:
   enabled: true
   fullnameOverride: mongodb
 
-heapDumpExporter:
-  enabled: true
-  s3:
-    bucket: s3://test-bluerange-io
-    awsAccessKeyId: bluerange
-    awsSecretAccessKey: bluerange
+# Pod-level security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 20001
+  runAsGroup: 20001
+  fsGroup: 20001
+  seccompProfile:
+    type: RuntimeDefault
+
+# Container-level security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 20001
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  seccompProfile:
+    type: RuntimeDefault
