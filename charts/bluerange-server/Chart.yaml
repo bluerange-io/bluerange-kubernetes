@@ -9,8 +9,9 @@ maintainers:
 
 type: application
 
-version: 1.4.3
+version: 1.5.0
 
+# renovate: image=bluerange/bluerange
 appVersion: "26.2.4"
 
 dependencies:
