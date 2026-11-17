@@ -5,7 +5,15 @@
     "customManagers:dockerfileVersions",
     "customManagers:helmChartYamlAppVersions"
   ],
-
+  "bumpVersions": [
+    {
+      "filePatterns": [
+        "/^({{#each (distinct (lookupArray upgrades \"packageFileDir\"))}}{{{.}}}{{#unless @last}}|{{/unless}}{{/each}})/Chart\\.(yaml|yml)$/"
+      ],
+      "matchStrings": ["(?m)^version:\\s*(?<version>\\S+)"],
+      "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+    }
+  ],
   "branchPrefix": "deps/",
   "semanticCommits": "enabled",
 }
