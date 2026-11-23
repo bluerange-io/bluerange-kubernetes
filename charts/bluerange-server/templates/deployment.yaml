@@ -46,11 +46,37 @@ spec:
       serviceAccountName: {{ include "bluerangeServer.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.hostAliases }}
+      hostAliases:
+        {{- toYaml .Values.hostAliases | nindent 8 }}
+      {{- end }}
       {{- if .Values.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- end }}
-      {{- if .Values.s2s.enabled }}
+      {{- if or (or (or .Values.additionalInitContainers (ne (toString .Values.podSecurityContext.fsGroup) "20001")) .Values.s2s.enabled) .Values.additionalSidecarContainers }}
       initContainers:
+        {{- with .Values.additionalInitContainers }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if ne (toString .Values.podSecurityContext.fsGroup) "20001" }}
+        - name: volume-permission
+          image: busybox:1.38
+          command: ["/bin/sh", "-c"]
+          args:
+            - chown -R 20001:20001 {{ .Values.heapDumpExporter.directory }}
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: heap-dumps
+              mountPath: {{ .Values.heapDumpExporter.directory }}
+              {{- if .Values.heapDumpExporter.hostPath.enabled }}
+              subPathExpr: $(POD_NAME)
+              {{- end }}
+        {{- end }}
+        {{- if .Values.s2s.enabled }}
         - name: "s2s"
           securityContext:
             capabilities:
@@ -96,6 +122,10 @@ spec:
             - name: s2s-health
               mountPath: "/opt/s2s/health"
               subPath: health.txt
+        {{- end }}
+        {{- with .Values.additionalSidecarContainers }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -103,7 +133,6 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if or (or .Values.bluerangeServer.config .Values.heapDumpExporter.enabled) .Values.additionalVolumeMounts }}
           volumeMounts:
           {{- if .Values.bluerangeServer.config }}
             - name: config
@@ -121,13 +150,13 @@ spec:
               subPath: health.txt
               readOnly: true
           {{- end }}
-          {{- if .Values.heapDumpExporter.enabled }}
             - name: heap-dumps
               mountPath: {{ .Values.heapDumpExporter.directory }}
-          {{- end }}
+              {{- if .Values.heapDumpExporter.hostPath.enabled }}
+              subPathExpr: $(POD_NAME)
+              {{- end }}
           {{- if .Values.additionalVolumeMounts }}
             {{- toYaml .Values.additionalVolumeMounts | nindent 12 }}
-          {{- end }}
           {{- end }}
           {{- if or .Values.bluerangeServer.environment .Values.bluerangeServer.secrets }}
           envFrom:
@@ -142,6 +171,10 @@ spec:
           {{- end }}
           {{- if or .Values.bluerangeServer.preRunScript .Values.bluerangeServer.existingSecretRefs }}
           env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             {{- if .Values.bluerangeServer.preRunScript }}
             - name: RELUTION_PRERUN_SCRIPT
               value: /opt/relution/prerun.sh
@@ -157,7 +190,7 @@ spec:
             - name: monitoring
               containerPort: 8099
               protocol: TCP
-          {{ if .Values.startupProbe.enabled }}
+          {{- if .Values.startupProbe.enabled }}
           startupProbe:
             httpGet:
               path: /actuator/health
@@ -166,7 +199,7 @@ spec:
             periodSeconds: {{ .Values.startupProbe.periodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds | default 1 }}
           {{- end }}
-          {{ if .Values.livenessProbe.enabled }}
+          {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -175,7 +208,7 @@ spec:
             periodSeconds: {{ .Values.livenessProbe.periodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 1 }}
           {{- end }}
-          {{ if .Values.readinessProbe.enabled }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
@@ -186,26 +219,6 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        {{- if .Values.heapDumpExporter.enabled }}
-        - name: heap-dump-exporter
-          image: "{{ .Values.heapDumpExporter.image.repository }}:{{ .Values.heapDumpExporter.image.tag }}"
-          imagePullPolicy: {{ .Values.heapDumpExporter.image.pullPolicy }}
-          command: ["/bin/sh", "-c"]
-          args:
-          - |
-            yum install -y inotify-tools &&
-            echo "Listening for changes in directory '{{ .Values.heapDumpExporter.directory }}'..." &&
-            inotifywait -m {{ .Values.heapDumpExporter.directory }} -e close_write | while read path action file; do aws s3 --endpoint-url {{ .Values.heapDumpExporter.s3.endpointUrl }} cp "$path$file" "s3://{{ required "heapDumpExporter.s3.bucket is required!" .Values.heapDumpExporter.s3.bucket }}/{{ .Release.Namespace }}/{{ include "bluerangeServer.fullname" . }}/$file"; done;
-          env:
-            - name: "AWS_ACCESS_KEY_ID"
-              value: {{ required "heapDumpExporter.s3.awsAccessKeyId is required!" .Values.heapDumpExporter.s3.awsAccessKeyId }}
-            - name: "AWS_SECRET_ACCESS_KEY"
-              value: {{ required "heapDumpExporter.s3.awsSecretAccessKey is required!" .Values.heapDumpExporter.s3.awsSecretAccessKey }}
-          volumeMounts:
-            - name: heap-dumps
-              mountPath: {{ .Values.heapDumpExporter.directory }}
-        {{- end }}
-      {{- if or (or (or .Values.bluerangeServer.config .Values.heapDumpExporter.enabled) .Values.additionalVolumes) .Values.s2s.enabled }}
       volumes:
       {{- if .Values.bluerangeServer.config }}
         - name: config
@@ -218,10 +231,15 @@ spec:
             name: {{ include "bluerangeServer.fullname" . }}-prerun
             defaultMode: 0555
       {{- end }}
-      {{- if .Values.heapDumpExporter.enabled }}
         - name: heap-dumps
-          emptyDir: {}
-      {{- end }}
+          {{- if .Values.heapDumpExporter.hostPath.enabled }}
+          hostPath:
+            path: "/tmp/heapdumps"
+            type: DirectoryOrCreate
+          {{- else }}
+          emptyDir:
+            sizeLimit: {{ .Values.heapDumpExporter.emptyDir.sizeLimit }}
+          {{- end }}
       {{- if .Values.s2s.enabled }}
         - name: s2s-strongswan-secrets
           secret:
@@ -235,7 +253,6 @@ spec:
       {{- end }}
       {{- if .Values.additionalVolumes }}
         {{- toYaml .Values.additionalVolumes | nindent 8 }}
-      {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

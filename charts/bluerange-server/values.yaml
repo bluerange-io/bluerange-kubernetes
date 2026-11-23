@@ -1,7 +1,3 @@
-# Default values for bluerangeServer.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
@@ -28,6 +24,10 @@ podAnnotations: {}
 podSecurityContext: {}
 
 securityContext: {}
+
+hostAliases: []
+
+terminationGracePeriodSeconds: ~
 
 service:
   type: ClusterIP
@@ -89,33 +89,34 @@ bluerangeServer:
     postgresql:
       enabled: false
 
+additionalInitContainers: []
+additionalSidecarContainers: []
+
 additionalVolumes: []
 additionalVolumeMounts: []
 
-terminationGracePeriodSeconds: ~
-
-# The heap dump exporter sidecar is intended to be used for debugging. It will monitor the /opt/relution/log directory (customizable) and copy new files to a S3 bucket so they can be further inspected by our development team.
+# The heap dump exporter sidecar is intended to be used for debugging by our development team.
 heapDumpExporter:
-  enabled: false
-  image:
-    repository: amazon/aws-cli
-    pullPolicy: IfNotPresent
-    tag: "2.31.14"
   directory: /opt/relution/log
-  s3:
-    endpointUrl: https://s3.eu-central-1.amazonaws.com
-    bucket: ""
-    awsAccessKeyId: ""
-    awsSecretAccessKey: ""
+  emptyDir:
+    sizeLimit: 5Gi
+  hostPath:
+    enabled: false
 
 s2s:
   enabled: false
+  # Create one IPsec child SA per remote subnet instead of a single
+  # child SA covering all subnets.
+  separateChildSas: false
+  # Optional command executed by the health check script after the SA checks.
+  # If it fails, its output is logged and the tunnel is reinitiated.
+  healthcheckCommand: ""
   image:
     repository: relution/s2s-docker
     pullPolicy: IfNotPresent
-    tag: "1.0.0"
+    tag: "1.1.0"
   livenessProbe:
-    enabled: false
+    enabled: true
     initialDelaySeconds: 30
     periodSeconds: 10
     timeoutSeconds: 5
